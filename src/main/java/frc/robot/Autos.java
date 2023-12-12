@@ -41,7 +41,7 @@ public final class Autos extends SequentialCommandGroup{
   public void movementAuto(DriveSubsystem d_Drive) {
     System.out.println("move auto");  
 
-    String trajectoryJSON = "PathWeaver/output/WholeShabangCenterOne.wpilib.json";
+    String trajectoryJSON = "PathWeaver/output/Test.wpilib.json";
     Trajectory trajectory = new Trajectory(); 
     try {
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
