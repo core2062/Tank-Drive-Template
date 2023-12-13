@@ -16,6 +16,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static int kAutoSelected = 0;
+  public static double kSpeedModifier = 0.75;
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
@@ -58,8 +62,7 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(Constants.DriveConstants.kTrackwidthMeters);
-
+    
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 

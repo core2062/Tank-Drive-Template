@@ -16,15 +16,13 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public final class Autos extends SequentialCommandGroup{
   /** Example static factory for an autonomous command. */
-  private Autos(int cases, DriveSubsystem d_Drive) {
+  public Autos(int cases, DriveSubsystem d_Drive) {
     System.out.printf("autos selection: %d/n", cases);
     switch (cases) {
         case 0:

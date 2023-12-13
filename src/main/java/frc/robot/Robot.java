@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,6 +17,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  //auton selection setup
+  private static final String kDefaultAuto = "Do Nothing";
+  private static final String kMoveAuto = "Move Auto";
+
+  private String m_autoSelected;
+
+  private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
+
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -25,6 +37,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    m_autoChooser.setDefaultOption("Do Nothing", kDefaultAuto);
+    m_autoChooser.addOption("Move Auto", kMoveAuto);
+    SmartDashboard.putData("Auto Selection",m_autoChooser);
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -56,6 +73,25 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    System.out.println("Autos initialized");
+
+    m_autoSelected = m_autoChooser.getSelected();
+    switch (m_autoSelected) {
+      case kDefaultAuto:
+        System.out.println("Do Nothing Auto");
+        Constants.kAutoSelected = 100;
+        break;
+      case kMoveAuto:
+        System.out.println("Movement Auto");
+        Constants.kAutoSelected = 0;
+        break;
+      default:
+        System.out.println("default auto Movement");
+        Constants.kAutoSelected = 100;
+        break;
+    }
+
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
