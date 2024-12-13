@@ -1,36 +1,26 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.controls.Follower;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DriveSubsystem extends SubsystemBase {
-  private final WPI_TalonFX m_leftPrimaryMotor = new WPI_TalonFX(DriveConstants.kLeftPrimaryMotorPort);
-  private final WPI_TalonFX m_leftSecondaryMotor = new WPI_TalonFX(DriveConstants.kLeftSecondaryMotorPort);
-  private final WPI_TalonFX m_rightPrimaryMotor = new WPI_TalonFX(DriveConstants.kRightPrimaryMotorPort);
-  private final WPI_TalonFX m_rightSecondaryMotor = new WPI_TalonFX(DriveConstants.kRightSecondaryMotorPort);
-  // The motors on the left side of the drive.
-  private final MotorControllerGroup m_leftMotors =
-      new MotorControllerGroup(
-          m_leftPrimaryMotor,
-          m_leftSecondaryMotor);
+import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 
-  // The motors on the right side of the drive.
-  private final MotorControllerGroup m_rightMotors =
-      new MotorControllerGroup(
-          m_rightPrimaryMotor,
-          m_rightSecondaryMotor);
+public class DriveSubsystem extends SubsystemBase {
+  private final TalonFX m_leftPrimaryMotor = new TalonFX(DriveConstants.kLeftPrimaryMotorPort);
+  private final TalonFX m_leftSecondaryMotor = new TalonFX(DriveConstants.kLeftSecondaryMotorPort);
+  private final TalonFX m_rightPrimaryMotor = new TalonFX(DriveConstants.kRightPrimaryMotorPort);
+  private final TalonFX m_rightSecondaryMotor = new TalonFX(DriveConstants.kRightSecondaryMotorPort);
 
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftPrimaryMotor, m_rightPrimaryMotor);
 
   // The left-side drive encoder
   private final Encoder m_leftEncoder =
@@ -63,8 +53,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
+    m_rightSecondaryMotor.setControl(new Follower(m_leftPrimaryMotor.getDeviceID(), false));
+    m_leftSecondaryMotor.setControl(new Follower(m_leftPrimaryMotor.getDeviceID(), false));
     m_leftPrimaryMotor.setInverted(true);
-    m_leftSecondaryMotor.setInverted(true);
 
     resetEncoders();
     // m_odometry =
@@ -136,8 +127,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    m_leftMotors.setVoltage(leftVolts);
-    m_rightMotors.setVoltage(rightVolts);
+    m_leftPrimaryMotor.setVoltage(leftVolts);
+    m_rightPrimaryMotor.setVoltage(rightVolts);
     m_drive.feed();
   }
 
